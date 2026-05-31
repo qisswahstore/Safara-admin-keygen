@@ -2,57 +2,72 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Safara Admin — Generate Kode</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Safara Admin</title>
+<meta name="theme-color" content="#0D5C4A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Safara Admin">
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Safara%20Admin%22,%22short_name%22:%22S-Admin%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230D5C4A%22,%22theme_color%22:%22%230D5C4A%22,%22icons%22:[{%22src%22:%22https://img.icons8.com/color/192/key.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22},{%22src%22:%22https://img.icons8.com/color/512/key.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+<link rel="icon" href="https://img.icons8.com/color/96/key.png">
+<link rel="apple-touch-icon" href="https://img.icons8.com/color/192/key.png">
 <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f0f4f8; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .card { background: white; border-radius: 16px; padding: 32px; max-width: 480px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
-    h1 { color: #0D5C4A; font-size: 22px; margin-bottom: 4px; }
-    .subtitle { color: #888; font-size: 13px; margin-bottom: 24px; }
-    label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; font-size: 14px; }
-    select, input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; margin-bottom: 16px; outline: none; }
-    select:focus, input:focus { border-color: #0D5C4A; }
-    button { width: 100%; padding: 14px; background: #0D5C4A; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
-    button:hover { background: #0a4a3a; }
-    .result { margin-top: 24px; background: #f0fdf4; border: 2px solid #86efac; border-radius: 12px; padding: 20px; display: none; }
-    .code { font-size: 22px; font-weight: bold; color: #0D5C4A; letter-spacing: 2px; text-align: center; padding: 12px; background: white; border-radius: 8px; margin: 10px 0; border: 2px dashed #0D5C4A; cursor: pointer; }
-    .info { font-size: 13px; color: #555; text-align: center; }
-    .copy-btn { background: #25d366; margin-top: 10px; font-size: 14px; padding: 10px; }
-    .warning { background: #fef3c7; border: 1.5px solid #f59e0b; border-radius: 10px; padding: 12px; font-size: 13px; color: #92400e; margin-bottom: 20px; }
-    .history { margin-top: 24px; }
-    .history h3 { font-size: 14px; color: #666; margin-bottom: 10px; }
-    .history-item { background: #f8fafc; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; border-left: 3px solid #0D5C4A; }
-    .history-code { font-weight: bold; color: #0D5C4A; font-size: 14px; }
-    .history-meta { color: #888; font-size: 12px; margin-top: 2px; }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,sans-serif;background:#f0f4f8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+    .card{background:white;border-radius:16px;padding:28px;max-width:480px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,0.1);}
+    h1{color:#0D5C4A;font-size:22px;margin-bottom:4px;}
+    .sub{color:#888;font-size:13px;margin-bottom:20px;}
+    label{display:block;font-weight:600;margin-bottom:6px;color:#333;font-size:14px;}
+    select,input{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;font-size:14px;margin-bottom:14px;outline:none;}
+    select:focus,input:focus{border-color:#0D5C4A;}
+    button{width:100%;padding:14px;background:#0D5C4A;color:white;border:none;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;margin-bottom:8px;}
+    button:hover{background:#0a4a3a;}
+    .btn-wa{background:#25d366;}
+    .btn-wa:hover{background:#1da851;}
+    .btn-copy{background:#3B82F6;font-size:13px;padding:10px;}
+    .result{margin-top:20px;background:#f0fdf4;border:2px solid #86efac;border-radius:12px;padding:20px;display:none;}
+    .code{font-size:20px;font-weight:bold;color:#0D5C4A;letter-spacing:2px;text-align:center;padding:14px;background:white;border-radius:8px;margin:10px 0;border:2px dashed #0D5C4A;cursor:pointer;word-break:break-all;}
+    .info-row{font-size:13px;color:#555;text-align:center;margin-bottom:4px;}
+    .warning{background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px;padding:12px;font-size:13px;color:#92400e;margin-bottom:16px;}
+    .history{margin-top:20px;}
+    .history h3{font-size:14px;color:#666;margin-bottom:10px;border-top:1px solid #eee;padding-top:14px;}
+    .history-item{background:#f8fafc;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px;border-left:3px solid #0D5C4A;}
+    .history-code{font-weight:bold;color:#0D5C4A;font-size:13px;word-break:break-all;}
+    .history-meta{color:#888;font-size:11px;margin-top:3px;}
+    .divider{border:none;border-top:1px solid #eee;margin:16px 0;}
 </style>
 </head>
 <body>
 <div class="card">
     <h1>🔑 Safara Admin</h1>
-    <p class="subtitle">Generate Kode Aktivasi untuk Pengguna</p>
-
-    <div class="warning">
-        ⚠️ Halaman ini RAHASIA — hanya untuk admin. Jangan bagikan ke pengguna.
-    </div>
+    <p class="sub">Generate Kode Aktivasi untuk Pengguna</p>
+    <div class="warning">⚠️ Halaman ini RAHASIA — hanya untuk Anda. Jangan bagikan ke siapapun.</div>
 
     <label>📦 Pilih Paket</label>
     <select id="paket">
-        <option value="30">1 Bulan (30 hari)</option>
-        <option value="90">3 Bulan (90 hari)</option>
-        <option value="365">1 Tahun (365 hari)</option>
+        <option value="30">1 Bulan — Rp 50.000</option>
+        <option value="90">3 Bulan — Rp 120.000</option>
+        <option value="365">1 Tahun — Rp 400.000</option>
     </select>
 
-    <label>👤 Nama Pengguna (opsional, untuk catatan)</label>
-    <input type="text" id="namaPengguna" placeholder="Contoh: Pak Ahmad - Haji Travel">
+    <label>📱 Device ID Pengguna <span style="color:#ef4444;">*</span></label>
+    <input type="text" id="deviceId" placeholder="Contoh: A3F7-K9X2" style="text-transform:uppercase;letter-spacing:2px;">
+    <div style="font-size:12px;color:#888;margin-top:-10px;margin-bottom:14px;">Device ID dikirim user saat minta upgrade via WhatsApp</div>
+
+    <label>👤 Nama Pengguna (opsional)</label>
+    <input type="text" id="namaPengguna" placeholder="Contoh: Pak Ahmad - KBIH Al-Barokah">
 
     <button onclick="generateKode()">⚡ Generate Kode Aktivasi</button>
 
     <div class="result" id="resultCard">
-        <div class="info" id="resultInfo"></div>
+        <div class="info-row" id="resultInfo" style="font-weight:bold;color:#0D5C4A;"></div>
+        <div class="info-row" id="resultDevice" style="color:#888;font-size:12px;"></div>
         <div class="code" id="resultCode" onclick="copyCode()">-</div>
-        <div class="info" style="color:#888;font-size:12px;">Klik kode untuk menyalin</div>
-        <button class="copy-btn" onclick="shareWA()">💬 Kirim via WhatsApp</button>
+        <div class="info-row" style="color:#888;font-size:12px;">Ketuk kode untuk menyalin</div>
+        <hr class="divider">
+        <button class="btn-copy" onclick="copyCode()">📋 Salin Kode</button>
+        <button class="btn-wa" onclick="shareWA()">💬 Kirim via WhatsApp ke User</button>
     </div>
 
     <div class="history" id="historySection" style="display:none;">
@@ -63,6 +78,7 @@
 
 <script>
 const _SK = "SAFR2026XK";
+const WA_ADMIN = "6281391485440";
 const history_codes = [];
 
 function _sh(str) {
@@ -73,39 +89,50 @@ function _sh(str) {
 
 function generateKode() {
     const days = parseInt(document.getElementById('paket').value);
+    const deviceRaw = document.getElementById('deviceId').value.trim().toUpperCase();
     const nama = document.getElementById('namaPengguna').value.trim();
+
+    if(!deviceRaw) {
+        alert('⚠️ Device ID wajib diisi!\nMinta dari pengguna di halaman Lisensi aplikasi.');
+        return;
+    }
+
+    const deviceId = deviceRaw.replace('-','');
+    const devEnc = _sh(deviceId).substring(0,4);
 
     const expiryDays = Math.floor(Date.now() / 86400000) + days;
     const expiryEnc = expiryDays.toString(36).toUpperCase().padStart(4,'0');
     const typeEnc = days.toString(36).toUpperCase().padStart(4,'0');
-    const checksum = _sh(_SK + typeEnc + expiryEnc);
-    const code = `SAFARA-${typeEnc}-${expiryEnc}-${checksum}`;
+    const checksum = _sh(_SK + typeEnc + expiryEnc + devEnc);
+    const code = `SAFARA-${typeEnc}-${expiryEnc}-${devEnc}-${checksum}`;
 
     const expiryDate = new Date(expiryDays * 86400000);
-    const paketLabel = days === 30 ? '1 Bulan' : days === 90 ? '3 Bulan' : '1 Tahun';
+    const paketLabel = days === 30 ? '1 Bulan (Rp 50.000)' : days === 90 ? '3 Bulan (Rp 120.000)' : '1 Tahun (Rp 400.000)';
     const expStr = expiryDate.toLocaleDateString('id-ID');
 
     document.getElementById('resultCode').textContent = code;
-    document.getElementById('resultInfo').textContent = `Paket ${paketLabel} · Berlaku hingga ${expStr}`;
+    document.getElementById('resultInfo').textContent = `Paket ${paketLabel} · s/d ${expStr}`;
+    document.getElementById('resultDevice').textContent = `Device: ${deviceRaw}${nama ? ' · ' + nama : ''}`;
     document.getElementById('resultCard').style.display = 'block';
 
-    // Simpan ke history
-    history_codes.unshift({ code, paket: paketLabel, expiry: expStr, nama, waktu: new Date().toLocaleTimeString('id-ID') });
+    history_codes.unshift({ code, paket: paketLabel, expiry: expStr, device: deviceRaw, nama, waktu: new Date().toLocaleTimeString('id-ID') });
     renderHistory();
 }
 
 function copyCode() {
     const code = document.getElementById('resultCode').textContent;
     navigator.clipboard.writeText(code).then(() => {
-        document.getElementById('resultCode').textContent = '✅ Tersalin!';
-        setTimeout(() => document.getElementById('resultCode').textContent = code, 1500);
+        const el = document.getElementById('resultCode');
+        const orig = el.textContent;
+        el.textContent = '✅ Tersalin!';
+        setTimeout(() => el.textContent = orig, 1500);
     });
 }
 
 function shareWA() {
     const code = document.getElementById('resultCode').textContent;
     const info = document.getElementById('resultInfo').textContent;
-    const msg = `🔑 *Kode Aktivasi Safara*\n\n${info}\n\nKode Anda:\n*${code}*\n\nCara aktivasi:\n1. Buka Safara\n2. Setting → Lisensi\n3. Masukkan kode di atas\n4. Klik Aktifkan\n\nTerima kasih sudah berlangganan! 🙏`;
+    const msg = `🔑 *Kode Aktivasi Safara*\n\n${info}\n\nKode Aktivasi Anda:\n*${code}*\n\n📲 Cara aktivasi:\n1. Buka aplikasi Safara\n2. Setting → Lisensi\n3. Masukkan kode di atas\n4. Klik *Aktifkan Sekarang*\n\nTerima kasih sudah berlangganan! 🙏`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
 }
 
@@ -114,8 +141,8 @@ function renderHistory() {
     document.getElementById('historySection').style.display = 'block';
     document.getElementById('historyList').innerHTML = history_codes.map(h => `
         <div class="history-item">
-            <div class="history-code">${h.code}</div>
-            <div class="history-meta">${h.paket} · s/d ${h.expiry}${h.nama ? ' · ' + h.nama : ''} · ${h.waktu}</div>
+            <div class="history-code" onclick="navigator.clipboard.writeText('${h.code}')">${h.code}</div>
+            <div class="history-meta">${h.paket} · s/d ${h.expiry} · Device: ${h.device}${h.nama ? ' · ' + h.nama : ''} · ${h.waktu}</div>
         </div>`).join('');
 }
 </script>
