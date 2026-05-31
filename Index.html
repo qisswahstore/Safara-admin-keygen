@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safara Admin — Generate Kode</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f4f8; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .card { background: white; border-radius: 16px; padding: 32px; max-width: 480px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
+    h1 { color: #0D5C4A; font-size: 22px; margin-bottom: 4px; }
+    .subtitle { color: #888; font-size: 13px; margin-bottom: 24px; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; color: #333; font-size: 14px; }
+    select, input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; margin-bottom: 16px; outline: none; }
+    select:focus, input:focus { border-color: #0D5C4A; }
+    button { width: 100%; padding: 14px; background: #0D5C4A; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #0a4a3a; }
+    .result { margin-top: 24px; background: #f0fdf4; border: 2px solid #86efac; border-radius: 12px; padding: 20px; display: none; }
+    .code { font-size: 22px; font-weight: bold; color: #0D5C4A; letter-spacing: 2px; text-align: center; padding: 12px; background: white; border-radius: 8px; margin: 10px 0; border: 2px dashed #0D5C4A; cursor: pointer; }
+    .info { font-size: 13px; color: #555; text-align: center; }
+    .copy-btn { background: #25d366; margin-top: 10px; font-size: 14px; padding: 10px; }
+    .warning { background: #fef3c7; border: 1.5px solid #f59e0b; border-radius: 10px; padding: 12px; font-size: 13px; color: #92400e; margin-bottom: 20px; }
+    .history { margin-top: 24px; }
+    .history h3 { font-size: 14px; color: #666; margin-bottom: 10px; }
+    .history-item { background: #f8fafc; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; border-left: 3px solid #0D5C4A; }
+    .history-code { font-weight: bold; color: #0D5C4A; font-size: 14px; }
+    .history-meta { color: #888; font-size: 12px; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="card">
+    <h1>🔑 Safara Admin</h1>
+    <p class="subtitle">Generate Kode Aktivasi untuk Pengguna</p>
+
+    <div class="warning">
+        ⚠️ Halaman ini RAHASIA — hanya untuk admin. Jangan bagikan ke pengguna.
+    </div>
+
+    <label>📦 Pilih Paket</label>
+    <select id="paket">
+        <option value="30">1 Bulan (30 hari)</option>
+        <option value="90">3 Bulan (90 hari)</option>
+        <option value="365">1 Tahun (365 hari)</option>
+    </select>
+
+    <label>👤 Nama Pengguna (opsional, untuk catatan)</label>
+    <input type="text" id="namaPengguna" placeholder="Contoh: Pak Ahmad - Haji Travel">
+
+    <button onclick="generateKode()">⚡ Generate Kode Aktivasi</button>
+
+    <div class="result" id="resultCard">
+        <div class="info" id="resultInfo"></div>
+        <div class="code" id="resultCode" onclick="copyCode()">-</div>
+        <div class="info" style="color:#888;font-size:12px;">Klik kode untuk menyalin</div>
+        <button class="copy-btn" onclick="shareWA()">💬 Kirim via WhatsApp</button>
+    </div>
+
+    <div class="history" id="historySection" style="display:none;">
+        <h3>📋 Riwayat Kode (sesi ini)</h3>
+        <div id="historyList"></div>
+    </div>
+</div>
+
+<script>
+const _SK = "SAFR2026XK";
+const history_codes = [];
+
+function _sh(str) {
+    let h = 5381;
+    for(let i = 0; i < str.length; i++) h = ((h << 5) + h) + str.charCodeAt(i);
+    return (Math.abs(h) % 1679616).toString(36).toUpperCase().padStart(4,'0').substring(0,4);
+}
+
+function generateKode() {
+    const days = parseInt(document.getElementById('paket').value);
+    const nama = document.getElementById('namaPengguna').value.trim();
+
+    const expiryDays = Math.floor(Date.now() / 86400000) + days;
+    const expiryEnc = expiryDays.toString(36).toUpperCase().padStart(4,'0');
+    const typeEnc = days.toString(36).toUpperCase().padStart(4,'0');
+    const checksum = _sh(_SK + typeEnc + expiryEnc);
+    const code = `SAFARA-${typeEnc}-${expiryEnc}-${checksum}`;
+
+    const expiryDate = new Date(expiryDays * 86400000);
+    const paketLabel = days === 30 ? '1 Bulan' : days === 90 ? '3 Bulan' : '1 Tahun';
+    const expStr = expiryDate.toLocaleDateString('id-ID');
+
+    document.getElementById('resultCode').textContent = code;
+    document.getElementById('resultInfo').textContent = `Paket ${paketLabel} · Berlaku hingga ${expStr}`;
+    document.getElementById('resultCard').style.display = 'block';
+
+    // Simpan ke history
+    history_codes.unshift({ code, paket: paketLabel, expiry: expStr, nama, waktu: new Date().toLocaleTimeString('id-ID') });
+    renderHistory();
+}
+
+function copyCode() {
+    const code = document.getElementById('resultCode').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        document.getElementById('resultCode').textContent = '✅ Tersalin!';
+        setTimeout(() => document.getElementById('resultCode').textContent = code, 1500);
+    });
+}
+
+function shareWA() {
+    const code = document.getElementById('resultCode').textContent;
+    const info = document.getElementById('resultInfo').textContent;
+    const msg = `🔑 *Kode Aktivasi Safara*\n\n${info}\n\nKode Anda:\n*${code}*\n\nCara aktivasi:\n1. Buka Safara\n2. Setting → Lisensi\n3. Masukkan kode di atas\n4. Klik Aktifkan\n\nTerima kasih sudah berlangganan! 🙏`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+}
+
+function renderHistory() {
+    if(history_codes.length === 0) return;
+    document.getElementById('historySection').style.display = 'block';
+    document.getElementById('historyList').innerHTML = history_codes.map(h => `
+        <div class="history-item">
+            <div class="history-code">${h.code}</div>
+            <div class="history-meta">${h.paket} · s/d ${h.expiry}${h.nama ? ' · ' + h.nama : ''} · ${h.waktu}</div>
+        </div>`).join('');
+}
+</script>
+</body>
+</html>
