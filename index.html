@@ -45,7 +45,7 @@
     <div class="warning">⚠️ Halaman ini RAHASIA — hanya untuk Anda. Jangan bagikan ke siapapun.</div>
 
     <label>📦 Pilih Paket</label>
-    <select id="paket">
+    <select id="paket" onchange="previewKodeUnik()">
         <option value="1">1 Hari — Rp 10.000</option>
         <option value="7">7 Hari — Rp 25.000</option>
         <option value="30">1 Bulan — Rp 50.000</option>
@@ -57,7 +57,7 @@
     <input type="text" id="deviceId" placeholder="Contoh: A3F7-K9X2" style="text-transform:uppercase;letter-spacing:2px;" oninput="previewKodeUnik()">
     <div id="kodeUnikPreview" style="font-size:12px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 12px;margin-top:-10px;margin-bottom:14px;display:none;">
         🔢 Kode unik user ini: <strong id="kodeUnikValue">-</strong> &nbsp;|&nbsp;
-        Nominal 1 Bulan: <strong id="nominalPreview">-</strong>
+        Nominal <span id="paketPreviewLabel">1 Bulan</span>: <strong id="nominalPreview">-</strong>
     </div>
 
     <label>👤 Nama Pengguna (opsional)</label>
@@ -133,8 +133,16 @@ function previewKodeUnik() {
     const deviceId = deviceRaw.replace('-', '');
     const num = (parseInt(_sh(deviceId + 'PAY'), 36) % 999) + 1;
     const kode = num.toString().padStart(3, '0');
+
+    // Baca paket yang dipilih
+    const days = parseInt(document.getElementById('paket').value);
+    const hargaBase = days === 1 ? 10000 : days === 7 ? 25000 : days === 30 ? 50000 : days === 90 ? 120000 : 400000;
+    const paketLabel = days === 1 ? '1 Hari' : days === 7 ? '7 Hari' : days === 30 ? '1 Bulan' : days === 90 ? '3 Bulan' : '1 Tahun';
+    const nominalTotal = hargaBase + parseInt(kode);
+
     document.getElementById('kodeUnikValue').textContent = kode;
-    document.getElementById('nominalPreview').textContent = `Rp ${(50000 + parseInt(kode)).toLocaleString('id-ID')}`;
+    document.getElementById('paketPreviewLabel').textContent = paketLabel;
+    document.getElementById('nominalPreview').textContent = `Rp ${nominalTotal.toLocaleString('id-ID')}`;
     preview.style.display = 'block';
 }
 
