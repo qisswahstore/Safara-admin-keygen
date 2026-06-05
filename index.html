@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Safara Admin</title>
+<title>Navara Admin</title>
 <meta name="theme-color" content="#0D5C4A">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Safara Admin">
-<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Safara%20Admin%22,%22short_name%22:%22S-Admin%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230D5C4A%22,%22theme_color%22:%22%230D5C4A%22,%22icons%22:[{%22src%22:%22https://img.icons8.com/color/192/key.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22},{%22src%22:%22https://img.icons8.com/color/512/key.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+<meta name="apple-mobile-web-app-title" content="Navara Admin">
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Navara%20Admin%22,%22short_name%22:%22N-Admin%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230D5C4A%22,%22theme_color%22:%22%230D5C4A%22,%22icons%22:[{%22src%22:%22https://img.icons8.com/color/192/key.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22},{%22src%22:%22https://img.icons8.com/color/512/key.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
 <link rel="icon" href="https://img.icons8.com/color/96/key.png">
 <link rel="apple-touch-icon" href="https://img.icons8.com/color/192/key.png">
 <style>
@@ -40,7 +40,7 @@
 </head>
 <body>
 <div class="card">
-    <h1>🔑 Safara Admin</h1>
+    <h1>🔑 Navara Admin</h1>
     <p class="sub">Generate Kode Aktivasi untuk Pengguna</p>
     <div class="warning">⚠️ Halaman ini RAHASIA — hanya untuk Anda. Jangan bagikan ke siapapun.</div>
 
@@ -87,7 +87,7 @@
 </div>
 
 <script>
-const _SK = "SAFR2026XK";
+const _SK = "NAVR2026XK";
 const WA_ADMIN = "6281391485440";
 
 function _sh(str) {
@@ -98,12 +98,12 @@ function _sh(str) {
 
 // ===== HISTORI PERMANEN =====
 function loadHistory() {
-    try { return JSON.parse(localStorage.getItem('safara_keygen_history') || '[]'); }
+    try { return JSON.parse(localStorage.getItem('navara_keygen_history') || '[]'); }
     catch(e) { return []; }
 }
 
 function saveHistory(list) {
-    localStorage.setItem('safara_keygen_history', JSON.stringify(list));
+    localStorage.setItem('navara_keygen_history', JSON.stringify(list));
 }
 
 function addToHistory(item) {
@@ -122,7 +122,7 @@ function deleteHistory(index) {
 
 function clearAllHistory() {
     if(!confirm('Hapus SEMUA riwayat kode?\nTindakan ini tidak bisa dibatalkan!')) return;
-    localStorage.removeItem('safara_keygen_history');
+    localStorage.removeItem('navara_keygen_history');
     renderHistory();
 }
 
@@ -162,7 +162,7 @@ function generateKode() {
     const expiryEnc = expiryDays.toString(36).toUpperCase().padStart(4,'0');
     const typeEnc = days.toString(36).toUpperCase().padStart(4,'0');
     const checksum = _sh(_SK + typeEnc + expiryEnc + devEnc);
-    const code = `SAFARA-${typeEnc}-${expiryEnc}-${devEnc}-${checksum}`;
+    const code = `NAVARA-${typeEnc}-${expiryEnc}-${devEnc}-${checksum}`;
 
     const expiryDate = new Date(expiryDays * 86400000);
     const paketLabel = days === 1 ? '1 Hari (Rp 10.000)' : days === 7 ? '7 Hari (Rp 25.000)' : days === 30 ? '1 Bulan (Rp 50.000)' : days === 90 ? '3 Bulan (Rp 120.000)' : '1 Tahun (Rp 400.000)';
@@ -196,7 +196,7 @@ function copyCode() {
 function shareWA() {
     const code = document.getElementById('resultCode').textContent;
     const info = document.getElementById('resultInfo').textContent;
-    const msg = `🔑 *Kode Aktivasi Safara*\n\n${info}\n\nKode Aktivasi Anda:\n*${code}*\n\n📲 Cara aktivasi:\n1. Buka aplikasi Safara\n2. Setting → Lisensi\n3. Masukkan kode di atas\n4. Klik *Aktifkan Sekarang*\n\nTerima kasih sudah berlangganan! 🙏`;
+    const msg = `🔑 *Kode Aktivasi Navara*\n\n${info}\n\nKode Aktivasi Anda:\n*${code}*\n\n📲 Cara aktivasi:\n1. Buka aplikasi Navara\n2. Setting → Lisensi\n3. Masukkan kode di atas\n4. Klik *Aktifkan Sekarang*\n\nTerima kasih sudah berlangganan! 🙏`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
 }
 
@@ -245,7 +245,7 @@ function shareHistoryWA(index) {
     const list = loadHistory();
     const h = list[index];
     if(!h) return;
-    const msg = `🔑 *Kode Aktivasi Safara*\n\nPaket ${h.paket} · s/d ${h.expiry}\n\nKode Aktivasi Anda:\n*${h.code}*\n\n📲 Cara aktivasi:\n1. Buka aplikasi Safara\n2. Setting → Lisensi\n3. Masukkan kode di atas\n4. Klik *Aktifkan Sekarang*\n\nTerima kasih sudah berlangganan! 🙏`;
+    const msg = `🔑 *Kode Aktivasi Navara*\n\nPaket ${h.paket} · s/d ${h.expiry}\n\nKode Aktivasi Anda:\n*${h.code}*\n\n📲 Cara aktivasi:\n1. Buka aplikasi Navara\n2. Setting → Lisensi\n3. Masukkan kode di atas\n4. Klik *Aktifkan Sekarang*\n\nTerima kasih sudah berlangganan! 🙏`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
 }
 
